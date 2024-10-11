@@ -2,9 +2,7 @@
 export {};
 
 declare global {
-  namespace NodeJS {
-    interface Global {
-      _mongoClientPromise: Promise<any>;
-    }
+  interface MyGlobalInterface {
+    myProperty: unknown; // Use unknown instead of any
   }
 }

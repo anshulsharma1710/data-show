@@ -1,9 +1,9 @@
 import connectToDatabase from "@/lib/mongodb";
 import User from "@/models/User";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 // Named export for GET request
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     await connectToDatabase();
     console.log("Database connection successful");

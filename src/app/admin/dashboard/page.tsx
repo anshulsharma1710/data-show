@@ -10,9 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
-// Import the image file
-import logo from "/mnt/data/Latest Logo Colour.png"; // Adjust the path based on your setup
+import Image from "next/image";
 
 interface User {
   _id: string;
@@ -80,17 +78,18 @@ export default function AdminDashboard() {
     }
   };
 
-  const getValueOrNA = (value: any) => (value ? value : "-");
+  const getValueOrNA = (value: string | number | null | undefined) => (value ? value : "-");
+
 
   if (loading) {
     return <div>Loading...</div>; // Add a loading state if needed
   }
+  
 
   return (
     <div>
-      {/* Center the logo at the top */}
       <div className="flex justify-center pb-5">
-        <img src="/logo.png" alt="Maven Consulting Services Logo" className="w-auto h-20" />
+        <Image src="/logo.png" width={1625} height={277} alt="Maven Consulting Services Logo" className="w-auto h-20" />
       </div>
 
       <Table>
