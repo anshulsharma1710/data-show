@@ -1,13 +1,24 @@
-import { NextResponse } from "next/server";
-import clientPromise from "@/lib/mongodb"; // Adjust path if necessary
+import connectToDatabase from "@/lib/mongodb";
+import User from "@/models/User";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
+// Named export for GET request
+export async function GET(req: NextRequest) {
   try {
-    const client = await clientPromise;
-    const db = client.db("data-show"); // Replace with your actual database name
-    const users = await db.collection("test").find({}, { projection: { fname: 1, lname: 1 } }).toArray(); // Fetch only fname and lname
-    return NextResponse.json(users);
+    await connectToDatabase();
+    console.log("Database connection successful");
+
+    const users = await User.find();
+    console.log("Users fetched successfully", users);
+
+    return NextResponse.json(users, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ error: "Failed to fetch users" }, { status: 500 });
+    if (error instanceof Error) {
+      console.error("Failed to fetch users:", error.message);
+      return NextResponse.json({ message: "Failed to fetch users", error: error.message }, { status: 500 });
+    } else {
+      console.error("An unknown error occurred:", error);
+      return NextResponse.json({ message: "An unknown error occurred" }, { status: 500 });
+    }
   }
 }

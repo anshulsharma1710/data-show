@@ -1,31 +1,21 @@
-import { MongoClient } from "mongodb";
+import mongoose from "mongoose";
 
-const uri: string = process.env.MONGODB_URI || ""; // MongoDB URI from .env.local
-
-let client: MongoClient;
-let clientPromise: Promise<MongoClient>;
-
-// Add type declaration for global in Node.js
-declare global {
-  var _mongoClientPromise: Promise<MongoClient>;
-}
-
-if (!uri) {
-  throw new Error("Please add your MongoDB URI to .env.local");
-}
-
-// Check if we're in development mode
-if (process.env.NODE_ENV === "development") {
-  // In development mode, use global to preserve the client across hot reloads
-  if (!global._mongoClientPromise) {
-    client = new MongoClient(uri);
-    global._mongoClientPromise = client.connect();
+const connectToDatabase = async () => {
+  const mongoUri = process.env.MONGODB_URI;
+  if (!mongoUri) {
+    throw new Error("MongoDB connection string is missing");
   }
-  clientPromise = global._mongoClientPromise;
-} else {
-  // In production mode, create a new MongoClient instance
-  client = new MongoClient(uri);
-  clientPromise = client.connect();
-}
 
-export default clientPromise;
+  try {
+    if (mongoose.connection.readyState === 0) {
+      // No need to pass extra options anymore for Mongoose 6+
+      await mongoose.connect(mongoUri);
+      console.log("Connected to MongoDB");
+    }
+  } catch (error) {
+    console.error("Failed to connect to MongoDB", error);
+    throw error;
+  }
+};
+
+export default connectToDatabase;
