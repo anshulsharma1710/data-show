@@ -46,6 +46,7 @@ export default function AdminDashboard() {
         headers: {
           "Cache-Control": "no-store", // Ensures no caching on the server
         },
+        cache: 'no-store'
       });
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
