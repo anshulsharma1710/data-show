@@ -89,7 +89,7 @@
 //   if (loading) {
 //     return <div>Loading...</div>; // Add a loading state if needed
 //   }
-  
+
 
 //   return (
 //     <div>
@@ -189,7 +189,6 @@ import {
   TableBody,
   TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -225,12 +224,12 @@ export default function AdminDashboard() {
   const fetchUsers = async () => {
     console.log("Fetching users...");
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/getUsers`, {
+      const response = await fetch("/api/admin/getUsers", {
         method: "GET",
         headers: {
           "Cache-Control": "no-store", // Ensures no caching on the server
         },
-        cache: 'no-store'
+        cache: 'no-store' // how next js understands no caching on the server
       });
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -325,38 +324,35 @@ export default function AdminDashboard() {
             </TableRow>
           ))}
         </TableBody>
-
-        <TableFooter>
-          <TableRow>
-            <TableCell colSpan={15}>
-              <div className="flex justify-between items-center">
-                <div className="text-left font-bold text-black">
-                  Total Users: {users.length}
-                </div>
-                <div className="flex justify-end space-x-2">
-                  <button
-                    onClick={handlePreviousPage}
-                    disabled={currentPage === 1}
-                    className="bg-gray-200 rounded-lg px-4 py-2 hover:opacity-75"
-                  >
-                    Previous
-                  </button>
-                  <button
-                    onClick={handleNextPage}
-                    disabled={currentPage === totalPages}
-                    className="bg-gray-200 rounded-lg px-4 py-2 hover:opacity-75"
-                  >
-                    Next
-                  </button>
-                </div>
-              </div>
-              <div className="text-right text-sm text-gray-500">
-                Page {currentPage} of {totalPages}
-              </div>
-            </TableCell>
-          </TableRow>
-        </TableFooter>
       </Table>
+
+
+      <div className="w-full flex flex-col gap-4">
+        <div className="flex w-full justify-around items-center">
+          <div className="text-left font-bold text-black">
+            Total Users: {users.length}
+          </div>
+          <div className="flex justify-end space-x-2">
+            <button
+              onClick={handlePreviousPage}
+              disabled={currentPage === 1}
+              className="bg-gray-200 rounded-lg px-4 py-2 hover:opacity-75"
+            >
+              Previous
+            </button>
+            <button
+              onClick={handleNextPage}
+              disabled={currentPage === totalPages}
+              className="bg-gray-200 rounded-lg px-4 py-2 hover:opacity-75"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+        <div className="text-center text-sm text-gray-500 py-4 pb-8">
+          Page {currentPage} of {totalPages}
+        </div>
+      </div>
     </div>
   );
 }
