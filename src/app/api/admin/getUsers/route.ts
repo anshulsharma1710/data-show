@@ -2,6 +2,8 @@ import connectToDatabase from "@/lib/mongodb";
 import User from "@/models/User";
 import { NextResponse } from "next/server";
 
+export const revalidate = 0;
+
 // Named export for GET request
 export async function GET() {
   try {
