@@ -1,21 +1,18 @@
 import mongoose from "mongoose";
 
-const connectToDatabase = async () => {
-  const mongoUri = process.env.MONGODB_URI;
-  if (!mongoUri) {
-    throw new Error("MongoDB connection string is missing");
+const MONGODB_URI = process.env.MONGODB_URI;
+
+export default async function connectToDatabase() {
+  // Check if MONGODB_URI is defined
+  if (!MONGODB_URI) {
+    throw new Error("Please define the MONGODB_URI environment variable inside .env");
   }
 
-  try {
-    if (mongoose.connection.readyState === 0) {
-      // No need to pass extra options anymore for Mongoose 6+
-      await mongoose.connect(mongoUri);
-      console.log("Connected to MongoDB");
-    }
-  } catch (error) {
-    console.error("Failed to connect to MongoDB", error);
-    throw error;
+  // Check if already connected
+  if (mongoose.connection.readyState === 1) {
+    return; // Already connected
   }
-};
 
-export default connectToDatabase;
+  // Connect to MongoDB
+  return mongoose.connect(MONGODB_URI);
+}
