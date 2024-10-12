@@ -41,7 +41,12 @@ export default function AdminDashboard() {
   const fetchUsers = async () => {
     console.log("Fetching users...");
     try {
-      const response = await fetch("/api/admin/getUsers");
+      const response = await fetch("/api/admin/getUsers", {
+        method: "GET",
+        headers: {
+          "Cache-Control": "no-store", // Ensures no caching on the server
+        },
+      });
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -114,29 +119,29 @@ export default function AdminDashboard() {
           </TableRow>
         </TableHeader>
         <TableBody>
-  {currentUsers.map((user, index) => (
-    <TableRow
-      key={user._id}
-      className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}
-    >
-      <TableCell className="text-center">{getValueOrNA(user.name)}</TableCell>
-      <TableCell className="text-center">{getValueOrNA(user.email)}</TableCell>
-      <TableCell className="text-center">{getValueOrNA(user.phone)}</TableCell>
-      <TableCell className="text-center">{getValueOrNA(user.age)}</TableCell>
-      <TableCell className="text-center">{getValueOrNA(user.nationality)}</TableCell>
-      <TableCell className="text-center">{getValueOrNA(user.qualification)}</TableCell>
-      <TableCell className="text-center">{getValueOrNA(user.curr_institution)}</TableCell>
-      <TableCell className="text-center">{getValueOrNA(user.major)}</TableCell>
-      <TableCell className="text-center">{getValueOrNA(user.grad_year)}</TableCell>
-      <TableCell className="text-center">{getValueOrNA(user.pref_country)}</TableCell>
-      <TableCell className="text-center">{getValueOrNA(user.pref_course)}</TableCell>
-      <TableCell className="text-center">{getValueOrNA(user.univ_interest)}</TableCell>
-      <TableCell className="text-center">{getValueOrNA(user.intake_season)}</TableCell>
-      <TableCell className="text-center">{getValueOrNA(user.channel)}</TableCell>
-      <TableCell className="text-center">{getValueOrNA(user.questions)}</TableCell>
-    </TableRow>
-  ))}
-</TableBody>
+          {currentUsers.map((user, index) => (
+            <TableRow
+              key={user._id}
+              className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}
+            >
+              <TableCell className="text-center">{getValueOrNA(user.name)}</TableCell>
+              <TableCell className="text-center">{getValueOrNA(user.email)}</TableCell>
+              <TableCell className="text-center">{getValueOrNA(user.phone)}</TableCell>
+              <TableCell className="text-center">{getValueOrNA(user.age)}</TableCell>
+              <TableCell className="text-center">{getValueOrNA(user.nationality)}</TableCell>
+              <TableCell className="text-center">{getValueOrNA(user.qualification)}</TableCell>
+              <TableCell className="text-center">{getValueOrNA(user.curr_institution)}</TableCell>
+              <TableCell className="text-center">{getValueOrNA(user.major)}</TableCell>
+              <TableCell className="text-center">{getValueOrNA(user.grad_year)}</TableCell>
+              <TableCell className="text-center">{getValueOrNA(user.pref_country)}</TableCell>
+              <TableCell className="text-center">{getValueOrNA(user.pref_course)}</TableCell>
+              <TableCell className="text-center">{getValueOrNA(user.univ_interest)}</TableCell>
+              <TableCell className="text-center">{getValueOrNA(user.intake_season)}</TableCell>
+              <TableCell className="text-center">{getValueOrNA(user.channel)}</TableCell>
+              <TableCell className="text-center">{getValueOrNA(user.questions)}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
 
         <TableFooter>
           <TableRow>
